@@ -1,0 +1,1 @@
+install_package "https://github.com/facebook/hhvm/archive/HHVM-2.2.0.tar.gz" hhvm
