@@ -340,16 +340,25 @@ function load_plugins {
 }
 
 function build_package {
-    local source_path=$1
+    #local source_path=$1
     local cwd="$(pwd)"
-    if [ -z $1 ]; then
+    #if [ -z $1 ]; then
       local source_path="$TMP/source/$DEFINITION"
-    fi
+    #fi
 
     if [ ! -d "$PREFIX" ]; then
         mkdir -p "$PREFIX"
     fi
 
+    local command="php"
+    if [ ! -z "$1" ]; then
+        local command="$1"
+    fi
+
+    "build_package_${command}" "$@"
+}
+
+function build_package_php {
     configure_package "$source_path"
 
     trigger_before_install 2>&4
@@ -390,6 +399,10 @@ function build_package {
     fi
 }
 
+function build_package_hhvm {
+    log "Compiling" "$source_path"
+}
+
 # Definition commands
 # -------------------
 
@@ -402,7 +415,7 @@ function install_package {
     {
         download $url
         cd "$TMP/source/$DEFINITION"
-        build_package
+        build_package "$2"
         cd - > /dev/null
     } >&4 2>&1
 }
