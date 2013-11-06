@@ -401,6 +401,14 @@ function build_package_php {
 
 function build_package_hhvm {
     log "Compiling" "$source_path"
+
+    cd "$source_path"
+    {
+        export HPHP_HOME=`pwd`
+        cmake .
+        make
+    } > /dev/null
+    cd "$cwd"
 }
 
 # Definition commands
